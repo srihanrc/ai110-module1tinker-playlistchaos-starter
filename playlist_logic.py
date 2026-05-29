@@ -14,21 +14,29 @@ DEFAULT_PROFILE = {
 
 def normalize_title(title: str) -> str:
     """Normalize a song title for comparisons."""
-    if not isinstance(title, str):
-        return ""
-    return title.strip()
+    return normalize_str(title, lower=False)
 
 
 def normalize_artist(artist: str) -> str:
     """Normalize an artist name for comparisons."""
-    if not artist:
-        return ""
-    return artist.strip().lower()
+    return normalize_str(artist, lower=True)
 
 
 def normalize_genre(genre: str) -> str:
     """Normalize a genre name for comparisons."""
-    return genre.lower().strip()
+    return normalize_str(genre, lower=True)
+
+
+def normalize_str(value: object, lower: bool = False) -> str:
+    """Generic string normalizer: ensures strings, strips, optional lowercasing.
+
+    Keeps the original named functions for API compatibility while
+    consolidating shared logic in one place.
+    """
+    if not isinstance(value, str):
+        return ""
+    s = value.strip()
+    return s.lower() if lower else s
 
 
 def normalize_song(raw: Song) -> Song:
